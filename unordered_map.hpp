@@ -23,7 +23,6 @@ private:
     double max_load_factor {0.25};
     size_t size {0};
 public:
-    typedef List<K, V>* iterator;
     unordered_map() {
         pointers.resize(1/max_load_factor);
     }
@@ -48,7 +47,7 @@ public:
                         break;
                     }
                 }
-                if (ptr -> next != nullptr) {
+                if (ptr -> next == nullptr) {
                     ptr -> next = new List<K, V>(rhs, ptr, nullptr);
                     nodes = ptr -> next;
                 } else {
@@ -87,16 +86,12 @@ public:
         return size/pointers.size();
     }
 
-    iterator begin() const { return head; }
+    List<K, V>* begin() const { return head; }
 
-    iterator end() const { return nullptr; }
+    List<K, V>* end() const { return nullptr; }
 
     ~unordered_map() {
-        List<K, V>* ptr = head;
-        while (ptr != nullptr) {
-            printf("%p\n", ptr);
-            ptr = ptr -> next;
-        }
+        List<K, V>* ptr = nullptr;
         while (head != nullptr) {
             ptr = head;
             head = head -> next;
